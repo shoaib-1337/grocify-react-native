@@ -1,37 +1,34 @@
-import { Show, useUser } from '@clerk/expo'
-import { useClerk } from '@clerk/expo'
-import { UserButton } from '@clerk/expo/native'
-import { Link } from 'expo-router'
-import { Text, View, Pressable, StyleSheet } from 'react-native'
+import { Show, useClerk, useUser } from "@clerk/expo";
+import { UserButton } from "@clerk/expo/native";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 export default function Page() {
-  const { user } = useUser()
-  const { signOut } = useClerk()
+  const { user } = useUser();
+  const { signOut } = useClerk();
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Welcome!</Text>
-      <Show when="signed-out">
-        <Link href="/(auth)/sign-in">
-          <Text>Sign in</Text>
-        </Link>
-        <Link href="/(auth)/sign-up">
-          <Text>Sign up</Text>
-        </Link>
-      </Show>
       <Show when="signed-in">
         <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
         <Pressable style={styles.button} onPress={() => signOut()}>
           <Text style={styles.buttonText}>Sign out</Text>
         </Pressable>
       </Show>
-       <Show when="signed-in">
-        <View style={{ width: 36, height: 36, borderRadius: 18, overflow: 'hidden' }}>
+      <Show when="signed-in">
+        <View
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: 18,
+            overflow: "hidden",
+          }}
+        >
           <UserButton />
         </View>
       </Show>
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -43,17 +40,17 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   button: {
-    backgroundColor: '#0a7ea4',
+    backgroundColor: "#0a7ea4",
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: '#fff',
-    fontWeight: '600',
+    color: "#fff",
+    fontWeight: "600",
   },
-})
+});
