@@ -39,7 +39,6 @@ export default function SignInScreen() {
         </View>
       </View>
       <View className="mt-8 flex-1 rounded-t-[36px] bg-card px-6 pb-8 pt-6">
-        //container for welcome text
         <View className="self-center rounded-full bg-secondary px-3 py-1">
           <Text className="text-xs font-semibold uppercase tracking-[1px] text-secondary-foreground">
             Welcome Back
