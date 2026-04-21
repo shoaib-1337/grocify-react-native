@@ -14,7 +14,7 @@ export default function SsoCallbackScreen() {
   }
 
   if (isSignedIn) {
-    return <Redirect href="/(home)" />;
+    return <Redirect href="/(tabs)" />;
   }
 
   return <Redirect href="/(auth)/sign-in" />;
