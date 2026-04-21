@@ -54,7 +54,7 @@ export default function SignInScreen() {
             disabled={isLoading}
             onPress={() => handleSocialAuth("oauth_google")}
           >
-            <View className="h-8 w-8 items-center justify-center rounded-full bg0white">
+            <View className="h-8 w-8 items-center justify-center rounded-full bg-white">
               <Image
                 source={require("@/assets/images/google.png")}
                 style={{ width: 20, height: 20 }}
