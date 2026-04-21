@@ -1,3 +1,4 @@
+import ListHeroCard from "@/components/List/ListHeroCard";
 import TabScreenBackground from "@/components/TabScreenBackground";
 import { useClerk, useUser } from "@clerk/expo";
 import { ScrollView } from "react-native";
