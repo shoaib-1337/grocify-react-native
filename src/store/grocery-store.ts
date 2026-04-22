@@ -27,6 +27,15 @@ export type CreateItemInput = {
 type ItemsResponse = { items: GroceryItem[] };
 type ItemResponse = { item: GroceryItem };
 
+const normalizePurchased = (value: unknown): boolean =>
+  value === true || value === "true" || value === 1 || value === "1";
+
+const normalizeItem = (item: GroceryItem): GroceryItem => ({
+  ...item,
+  quantity: Math.max(1, Number(item.quantity) || 1),
+  purchased: normalizePurchased(item.purchased),
+});
+
 type GroceryStore = {
   items: GroceryItem[];
   isLoading: boolean;
@@ -51,7 +60,7 @@ export const useGroceryStore = create<GroceryStore>((set, get) => ({
       const payload = (await res.json()) as ItemsResponse;
 
       if (!res.ok) throw new Error(`Request failed (${res.status})`);
-      set({ items: payload.items });
+      set({ items: payload.items.map(normalizeItem) });
     } catch (error) {
       console.error("Error loading items:", error);
       set({ error: "Something went wrong" });
@@ -76,8 +85,9 @@ export const useGroceryStore = create<GroceryStore>((set, get) => ({
       const payload = (await res.json()) as ItemResponse;
       if (!res.ok) throw new Error(`Request failed (${res.status})`);
 
-      set((state) => ({ items: [payload.item, ...state.items] }));
-      return payload.item;
+      const normalizedItem = normalizeItem(payload.item);
+      set((state) => ({ items: [normalizedItem, ...state.items] }));
+      return normalizedItem;
     } catch (error) {
       console.error("Error adding item:", error);
       set({ error: "Something went wrong" });
@@ -95,9 +105,10 @@ export const useGroceryStore = create<GroceryStore>((set, get) => ({
       });
       const payload = (await res.json()) as ItemResponse;
       if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      const normalizedItem = normalizeItem(payload.item);
       set((state) => ({
         items: state.items.map((item) =>
-          item.id === id ? payload.item : item,
+          item.id === id ? normalizedItem : item,
         ),
       }));
     } catch (error) {
@@ -121,10 +132,11 @@ export const useGroceryStore = create<GroceryStore>((set, get) => ({
 
       const payload = (await res.json()) as ItemResponse;
       if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      const normalizedItem = normalizeItem(payload.item);
 
       set((state) => ({
         items: state.items.map((item) =>
-          item.id === id ? payload.item : item,
+          item.id === id ? normalizedItem : item,
         ),
       }));
     } catch (error) {

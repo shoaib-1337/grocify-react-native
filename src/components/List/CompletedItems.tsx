@@ -6,13 +6,17 @@ const CompletedItems = () => {
   const { removeItem, togglePurchased, items } = useGroceryStore();
   const completedItems = items.filter((item) => item.purchased);
 
-  if (!completedItems.length) return null;
-
   return (
     <View className="mt-3 rounded-3xl border border-border bg-secondary p-4">
       <Text className="text-sm font-semibold uppercase tracking-[1px] text-secondary-foreground">
-        Completed
+        Completed ({completedItems.length})
       </Text>
+
+      {!completedItems.length ? (
+        <Text className="mt-3 text-sm text-muted-foreground">
+          No completed items yet.
+        </Text>
+      ) : null}
 
       {completedItems.map((item) => (
         <View
